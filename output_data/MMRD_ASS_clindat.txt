@@ -1,0 +1,116 @@
+"TMA" "TMA.core.id" "Histological.Subtype" "patientID" "Accession.num" "os.years" "os.status" "dss.years" "dss.status" "ass1.ihc.consolidated.numeric" "MLH1.ihc.consolidated.numeric" "MSH2.ihc.consolidated.numeric" "MSH6.ihc.consolidated.numeric" "PMS2.ihc.consolidated.numeric"
+"1" "09-004 (Endometrial carcinoma)" 90 "Serous" "EC106" "VGH 92-S23965" 9.30082237937873 "os.censored" "9.30082237937873" "dss.censored" 300 "0" "1" 1 0
+"2" "09-004 (Endometrial carcinoma)" 142 "Endometrioid" "EC175" "VGH 96-S39916" 0.0576103632031088 "os.event" "0.0576103632031088" "dss.censored" 300 "1" "Unk" 0 1
+"3" "11-010 (VOA endometrial)" 4 "Mixed Serous And Clear Cell" "VOA220" "VS04-8473" 5.11705513163455 "os.censored" "5.11705513163455" "dss.censored" 300 "0" "1" 1 0
+"4" "11-010 (VOA endometrial)" 40 "Endometrioid" "VOA661" "VS07-13600" 2.13010039946227 "os.censored" "2.13010039946227" "dss.censored" 300 "0" "1" 1 0
+"5" "10-005 (High grade endometrioid)" 79 "Endometrioid" "VR06-523" "VR06-523" 7.25274544752643 "os.censored" "7.25274544752643" "dss.censored" 300 "Unk" "1" 1 0
+"6" "10-005 (High grade endometrioid)" 72 "Endometrioid" "VS06-12861" "VS06-12861" 6.95705027639285 "os.censored" "6.95705027639285" "dss.censored" 300 "0" "1" 1 0
+"7" "10-005 (High grade endometrioid)" 65 "Endometrioid" "VS09-6759" "VS09-6759" 1.51943054950932 "os.event" "Unk" "Unk" 300 "0" "1" 1 0
+"8" "10-006 (High grade serous)" 47 "Mixed Serous And Low-Grade Endometrioid" "VOA1120" "VS09-13282" 4.78051934658668 "os.censored" "4.78051934658668" "dss.censored" 270 "0" "1" 1 0
+"9" "11-010 (VOA endometrial)" 153 "Mixed Serous And Low-Grade Endometrioid" "VOA1120" "VS09-13282" 4.78051934658668 "os.censored" "4.78051934658668" "dss.censored" 270 "0" "1" 1 0
+"10" "10-005 (High grade endometrioid)" 24 "Endometrioid" "VS05-26448" "VS05-26448" 2.44507507828165 "os.censored" "2.44507507828165" "dss.censored" 270 "1" "0" 0 1
+"11" "15-005 (Endometrial Carcinoma TMA)" 15 "Endometrioid" "VOA2169" "VOA2169" 2.24246912769012 "os.censored" "2.24246912769012" "dss.censored" 240 "" "" 1 0
+"12" "11-010 (VOA endometrial)" 85 "Endometrioid" "VOA876" "VS08-12131" 6.34375658811579 "os.censored" "6.34375658811579" "dss.censored" 240 "0" "1" 1 0
+"13" "10-005 (High grade endometrioid)" 12 "Endometrioid" "VS04-8049" "VS04-8049" 3.19229860101504 "os.censored" "3.19229860101504" "dss.censored" 240 "0" "1" 1 0
+"14" "10-006 (High grade serous)" 11 "Serous" "02S-23322" "02S-23322" 10.3438551531728 "os.event" "Unk" "Unk" 210 "1" "1" 0 1
+"15" "10-005 (High grade endometrioid)" 13 "Endometrioid" "VS04-11574" "VS04-11574" 2.14926582722093 "os.event" "2.14926582722093" "dss.event" 210 "0" "1" 1 0
+"16" "10-005 (High grade endometrioid)" 14 "Endometrioid" "VS05-25179" "VS05-25179" 3.64143127414502 "os.censored" "3.64143127414502" "dss.censored" 210 "0" "1" 1 0
+"17" "10-005 (High grade endometrioid)" 46 "Endometrioid" "VS06-21940" "VS06-21940" 2.51352303456257 "os.censored" "2.51352303456257" "dss.censored" 210 "0" "1" 1 0
+"18" "10-005 (High grade endometrioid)" 42 "Endometrioid" "VS07-33610" "VS07-33610" 2.03427326066898 "os.censored" "2.03427326066898" "dss.censored" 210 "0" "1" 1 0
+"19" "15-005 (Endometrial Carcinoma TMA)" 17 "Endometrioid" "VOA2180" "VOA2180" 2.39556438990511 "os.censored" "2.39556438990511" "dss.censored" 200 "" "" 1 0
+"20" "11-010 (VOA endometrial)" 24 "Endometrioid" "VOA607" "VS07-6579" 1.75226768079159 "os.event" "1.75226768079159" "dss.event" 200 "0" "1" 1 0
+"21" "11-010 (VOA endometrial)" 36 "Endometrioid" "VOA647" "VS07-11027" 5.11990712981292 "os.censored" "5.11990712981292" "dss.censored" 200 "0" "1" 1 0
+"22" "10-005 (High grade endometrioid)" 8 "Endometrioid" "VS03-21576" "VS03-21576" 2.11641080820609 "os.censored" "2.11641080820609" "dss.censored" 200 "1" "0" 0 1
+"23" "10-006 (High grade serous)" 29 "Serous" "VS07-23646" "VS07-23646" 3.88784391675633 "os.censored" "3.88784391675633" "dss.censored" 200 "1" "1" 1 0
+"24" "09-004 (Endometrial carcinoma)" 91 "Endometrioid" "EC107" "VGH 92-S24716" 15.1927083761133 "os.event" "Unk" "Unk" 180 "Unk" "1" 1 0
+"25" "09-004 (Endometrial carcinoma)" 113 "Clear Cell" "EC135" "VGH 94-S08344" 19.9621619697679 "os.event" "Unk" "Unk" 180 "1" "Unk" 0 1
+"26" "09-004 (Endometrial carcinoma)" 128 "Endometrioid" "EC155" "VGH 95-S26531" 6.32744315853551 "os.censored" "6.32744315853551" "dss.censored" 180 "1" "1" 0 1
+"27" "11-010 (VOA endometrial)" 44 "Endometrioid" "VOA699" "VS07-19342" 2.5162609528138 "os.censored" "2.5162609528138" "dss.censored" 180 "1" "1" 1 0
+"28" "11-010 (VOA endometrial)" 75 "Endometrioid" "VOA839" "VS08-5154" 2.94600003833086 "os.censored" "2.94600003833086" "dss.censored" 180 "0" "1" 1 0
+"29" "11-010 (VOA endometrial)" 84 "Endometrioid" "VOA874" "VS08-11818" 0.117730484803185 "os.censored" "0.117730484803185" "dss.censored" 180 "0" "1" 1 0
+"30" "11-010 (VOA endometrial)" 101 "Endometrioid" "VOA936" "VS08-20934" 5.45130931813971 "os.censored" "5.45130931813971" "dss.censored" 180 "0" "1" 1 0
+"31" "10-005 (High grade endometrioid)" 31 "Endometrioid" "VS04-9263" "VS04-9263" 2.19295843931359 "os.event" "2.19295843931359" "dss.event" 180 "0" "1" 1 0
+"32" "10-005 (High grade endometrioid)" 60 "Endometrioid" "VOA584" "VS07-4161" 5.2101443521766 "os.censored" "5.2101443521766" "dss.censored" 170 "0" "1" 1 0
+"33" "11-010 (VOA endometrial)" 20 "Endometrioid" "VOA584" "VS07-4161" 5.2101443521766 "os.censored" "5.2101443521766" "dss.censored" 170 "0" "1" 1 0
+"34" "10-005 (High grade endometrioid)" 23 "Endometrioid" "99S-41579" "99S-41579" 5.45108115828544 "os.event" "Unk" "Unk" 160 "0" "1" 1 0
+"35" "09-004 (Endometrial carcinoma)" 115 "Endometrioid" "EC138" "VGH 94-S14289" 11.2117752388149 "os.event" "Unk" "Unk" 160 "1" "Unk" 0 1
+"36" "10-005 (High grade endometrioid)" 50 "Endometrioid" "PS08-8734" "PS08-8734" 1.10338105524845 "os.censored" "1.10338105524845" "dss.censored" 160 "0" "1" 1 0
+"37" "14-001 (VOA endometrial serous)" 13 "Serous" "VOA2157" "VOA2157" 2.72970449648314 "os.censored" "2.72970449648314" "dss.censored" 160 "" "" 0 1
+"38" "11-010 (VOA endometrial)" 83 "Endometrioid" "VOA872" "" 2.06165244318135 "os.censored" "2.06165244318135" "dss.censored" 160 "0" "1" 1 0
+"39" "10-005 (High grade endometrioid)" 27 "Endometrioid" "95-S34315" "95-S34315" 2.06712827968383 "os.event" "2.06712827968383" "dss.event" 140 "1" "0" 0 1
+"40" "09-004 (Endometrial carcinoma)" 95 "Endometrioid" "EC111" "VGH 92-S40322" 2.39008855340264 "os.event" "2.39008855340264" "dss.event" 140 "0" "1" 1 0
+"41" "11-010 (VOA endometrial)" 76 "Mixed Serous And Low-Grade Endometrioid" "VOA841" "VS08-5484" 2.20664803056977 "os.censored" "2.20664803056977" "dss.censored" 140 "1" "0" 0 1
+"42" "11-010 (VOA endometrial)" 77 "Mixed Endometrioid With Undifferentiated" "VOA843" "VS08-5580" 4.46269266958894 "os.censored" "4.46269266958894" "dss.censored" 140 "1" "1" 0 1
+"43" "11-010 (VOA endometrial)" 105 "Endometrioid" "VOA947" "VS08-22366" 0.668052053301793 "os.event" "0.668052053301793" "dss.event" 140 "1" "1" 1 0
+"44" "10-006 (High grade serous)" 1 "Serous" "VS06-21164" "VS06-21164" 5.38012344360755 "os.censored" "5.38012344360755" "dss.censored" 140 "1" "Unk" 0 1
+"45" "10-005 (High grade endometrioid)" 11 "Endometrioid" "96-S30013" "96-S30013" 1.40740406106288 "os.event" "1.40740406106288" "dss.event" 120 "0" "1" 1 0
+"46" "10-005 (High grade endometrioid)" 73 "Endometrioid" "VS06-16520" "VS06-16520" 1.59084458389575 "os.event" "1.59084458389575" "dss.event" 100 "0" "1" 1 0
+"47" "09-004 (Endometrial carcinoma)" 24 "Endometrioid" "EC030" "VGH 84-S27283" 8.5806357993763 "os.event" "8.5806357993763" "dss.censored" 90 "0" "1" 1 0
+"48" "14-001 (VOA endometrial serous)" 14 "Serous" "VOA2214" "VOA2214" 2.45032275492985 "os.censored" "2.45032275492985" "dss.censored" 90 "" "" 0 1
+"49" "11-010 (VOA endometrial)" 5 "Endometrioid" "VOA454" "VS05-35114" 2.96516546608951 "os.censored" "2.96516546608951" "dss.censored" 90 "0" "1" 1 0
+"50" "09-004 (Endometrial carcinoma)" 153 "Endometrioid" "EC187" "VGH 97-S15880" 4.58612715074887 "os.censored" "4.58612715074887" "dss.censored" 80 "1" "Unk" 0 1
+"51" "09-004 (Endometrial carcinoma)" 165 "Endometrioid" "EC200" "VGH 98S-11310" 3.70987923042594 "os.censored" "3.70987923042594" "dss.censored" 80 "0" "1" 1 0
+"52" "11-010 (VOA endometrial)" 46 "Endometrioid" "VOA701" "VS07-19481" 6.0617510082384 "os.censored" "6.0617510082384" "dss.censored" 80 "1" "1" 1 0
+"53" "11-010 (VOA endometrial)" 69 "Endometrioid" "VOA819" "VS08-1890" 3.3155049223207 "os.censored" "3.3155049223207" "dss.censored" 80 "0" "1" 1 0
+"54" "11-010 (VOA endometrial)" 88 "Endometrioid" "VOA883" "VS08-12942" 5.45667107471505 "os.event" "5.45667107471505" "dss.event" 80 "0" "1" 1 0
+"55" "10-005 (High grade endometrioid)" 76 "Endometrioid" "VR06-261" "VR06-261" 2.60387433685338 "os.censored" "2.60387433685338" "dss.censored" 80 "0" "1" 1 0
+"56" "10-006 (High grade serous)" 42 "Serous" "VS07-17158" "VS07-17158" 1.10611897349969 "os.event" "1.10611897349969" "dss.event" 80 "1" "1" 1 0
+"57" "09-004 (Endometrial carcinoma)" 145 "Endometrioid" "EC178" "VGH 97-S01031" 0.194392195837817 "os.event" "0.194392195837817" "dss.event" 70 "Unk" "Unk" 1 0
+"58" "11-010 (VOA endometrial)" 61 "Endometrioid" "VOA784" "VS07-33077" 5.0295558275221 "os.censored" "5.0295558275221" "dss.censored" 70 "1" "0" 0 1
+"59" "09-004 (Endometrial carcinoma)" 53 "Endometrioid" "EC062" "VGH 87-S23257" 14.2125336421705 "os.censored" "14.2125336421705" "dss.censored" 60 "0" "1" 1 0
+"60" "11-010 (VOA endometrial)" 122 "Endometrioid" "VOA1015" "VS08-31954" 2.74601792606343 "os.event" "Unk" "Unk" 60 "0" "1" 1 0
+"61" "11-010 (VOA endometrial)" 132 "Endometrioid" "VOA1058" "VS09-3382" 2.68030788803375 "os.censored" "2.68030788803375" "dss.censored" 60 "0" "1" 1 0
+"62" "11-010 (VOA endometrial)" 111 "Endometrioid" "VOA983" "VS08-27865" 5.19668292077468 "os.censored" "5.19668292077468" "dss.censored" 60 "0" "1" 1 0
+"63" "10-006 (High grade serous)" 62 "Serous" "VOA852" "VS08-7578" 1.01576767120887 "os.censored" "1.01576767120887" "dss.censored" 50 "0" "1" 1 0
+"64" "11-010 (VOA endometrial)" 80 "Serous" "VOA852" "VS08-7578" 1.01576767120887 "os.censored" "1.01576767120887" "dss.censored" 50 "0" "1" 1 0
+"65" "09-004 (Endometrial carcinoma)" 141 "Endometrioid" "EC173" "VGH 96-S31170" 1.52239662761483 "os.censored" "1.52239662761483" "dss.censored" 40 "0" "1" 1 0
+"66" "11-010 (VOA endometrial)" 70 "Endometrioid" "VOA823" "VS08-2492" 5.6783283731381 "os.censored" "5.6783283731381" "dss.censored" 40 "1" "0" 0 1
+"67" "11-010 (VOA endometrial)" 107 "Endometrioid" "VOA957" "VS08-24199" 5.21584834853334 "os.censored" "5.21584834853334" "dss.censored" 40 "0" "1" 1 0
+"68" "09-004 (Endometrial carcinoma)" 23 "Endometrioid" "EC028" "VGH 84-S20888" 7.32952123848819 "os.event" "7.32952123848819" "dss.censored" 30 "0" "1" 1 0
+"69" "09-004 (Endometrial carcinoma)" 148 "Endometrioid" "EC182" "VGH 97-S06654" 0.752927519090135 "os.event" "0.752927519090135" "dss.event" 30 "0" "1" 1 0
+"70" "09-004 (Endometrial carcinoma)" 134 "Endometrioid" "EC161" "VGH 96-S02596" 5.86462089414934 "os.censored" "5.86462089414934" "dss.censored" 20 "Unk" "1" 1 0
+"71" "10-005 (High grade endometrioid)" 58 "Endometrioid" "US09-2004" "US09-2004" 3.84688922291492 "os.censored" "3.84688922291492" "dss.censored" 20 "0" "1" 1 0
+"72" "15-005 (Endometrial Carcinoma TMA)" 22 "Endometrioid" "VOA2231" "VOA2231" 0.574848752832605 "os.event" "Unk" "Unk" 20 "" "" 1 0
+"73" "11-010 (VOA endometrial)" 23 "Endometrioid" "VOA588" "VS07-4811" 4.70636739394902 "os.event" "4.70636739394902" "dss.event" 20 "0" "1" 1 0
+"74" "11-010 (VOA endometrial)" 63 "Endometrioid" "VOA799" "VS07-35025" 4.44352724183028 "os.event" "4.44352724183028" "dss.event" 20 "0" "1" 1 0
+"75" "11-010 (VOA endometrial)" 71 "Endometrioid" "VOA824" "VS08-2650" 3.69881347749386 "os.censored" "3.69881347749386" "dss.censored" 20 "0" "1" 1 0
+"76" "11-010 (VOA endometrial)" 87 "Endometrioid" "VOA882" "VS08-12876" 6.16852982003663 "os.censored" "6.16852982003663" "dss.censored" 20 "0" "1" 1 0
+"77" "10-005 (High grade endometrioid)" 68 "Endometrioid" "VS06-8811" "VS06-8811" 0.971846899261948 "os.event" "0.971846899261948" "dss.event" 20 "0" "1" 1 0
+"78" "10-005 (High grade endometrioid)" 49 "Mixed Endometrioid And Clear Cell" "VOA577" "VS07-3590" 5.73582465641408 "os.censored" "5.73582465641408" "dss.censored" 15 "0" "1" 1 0
+"79" "11-010 (VOA endometrial)" 18 "Mixed Endometrioid And Clear Cell" "VOA577" "VS07-3590" 5.73582465641408 "os.censored" "5.73582465641408" "dss.censored" 15 "0" "1" 1 0
+"80" "10-005 (High grade endometrioid)" 9 "Endometrioid" "00S-27219" "00S-27219" 9.47045923102828 "os.event" "Unk" "Unk" 10 "0" "1" 1 0
+"81" "11-010 (VOA endometrial)" 140 "Endometrioid" "VOA1086" "VS09-8290" 4.47102050426978 "os.censored" "4.47102050426978" "dss.censored" 10 "0" "1" 1 0
+"82" "11-010 (VOA endometrial)" 103 "Endometrioid" "VOA939" "VS08-21394" 2.06712827968383 "os.event" "2.06712827968383" "dss.event" 10 "0" "1" 1 0
+"83" "10-005 (High grade endometrioid)" 56 "Endometrioid" "VS08-15951" "VS08-15951" 2.45876466953783 "os.censored" "2.45876466953783" "dss.censored" 10 "0" "1" 1 0
+"84" "09-004 (Endometrial carcinoma)" 29 "Endometrioid" "EC035" "VGH 85-S03977" 1.36610712744006 "os.event" "1.36610712744006" "dss.event" 5 "0" "1" 1 0
+"85" "10-005 (High grade endometrioid)" 5 "Endometrioid" "01S-11251" "01S-11251" 0.92267845066682 "os.censored" "0.92267845066682" "dss.censored" 0 "0" "1" 1 0
+"86" "10-005 (High grade endometrioid)" 26 "Endometrioid" "89-S01793" "89-S01793" 2.04796285192517 "os.event" "2.04796285192517" "dss.event" 0 "0" "1" 1 0
+"87" "09-004 (Endometrial carcinoma)" 57 "Endometrioid" "EC066" "VGH 88-S13353" 13.4596061230804 "os.censored" "13.4596061230804" "dss.censored" 0 "0" "1" 1 0
+"88" "09-004 (Endometrial carcinoma)" 63 "Endometrioid" "EC075" "VGH 89-S15251" 10.2316005048721 "os.event" "10.2316005048721" "dss.censored" 0 "0" "1" 1 0
+"89" "09-004 (Endometrial carcinoma)" 77 "Serous" "EC090" "VGH 91-S01412" 10.9215559041838 "os.event" "Unk" "Unk" 0 "0" "1" 1 0
+"90" "09-004 (Endometrial carcinoma)" 79 "Endometrioid" "EC092" "VGH 91-S10949" 0.72281041832653 "os.event" "0.72281041832653" "dss.censored" 0 "0" "1" 1 0
+"91" "09-004 (Endometrial carcinoma)" 82 "Endometrioid" "EC095" "VGH 91-S22946" 10.3193279688388 "os.censored" "10.3193279688388" "dss.censored" 0 "0" "1" 1 0
+"92" "10-005 (High grade endometrioid)" 44 "Endometrioid" "US08-6157" "US08-6157" 4.68184020961502 "os.censored" "4.68184020961502" "dss.censored" 0 "0" "1" 1 0
+"93" "11-010 (VOA endometrial)" 116 "Endometrioid" "VOA1000" "VS08-29888" 2.2260416181827 "os.censored" "2.2260416181827" "dss.censored" 0 "0" "1" 1 0
+"94" "11-010 (VOA endometrial)" 123 "Endometrioid" "VOA1020" "VS08-32859" 2.48591569219593 "os.censored" "2.48591569219593" "dss.censored" 0 "0" "1" 1 0
+"95" "11-010 (VOA endometrial)" 145 "Endometrioid" "VOA1099" "VS09-9979" 5.40191270969031 "os.censored" "5.40191270969031" "dss.censored" 0 "0" "1" 1 0
+"96" "14-001 (VOA endometrial serous)" 5 "Serous" "VOA1942" "VOA1942" 3.32645659532564 "os.censored" "3.32645659532564" "dss.censored" 0 "" "" 0 1
+"97" "11-010 (VOA endometrial)" 35 "Endometrioid" "VOA645" "VS07-10972" 6.79288926124577 "os.censored" "6.79288926124577" "dss.censored" 0 "0" "1" 1 0
+"98" "11-010 (VOA endometrial)" 45 "Endometrioid" "VOA700" "VS07-19411" 4.73659857463976 "os.event" "4.73659857463976" "dss.censored" 0 "0" "1" 1 0
+"99" "11-010 (VOA endometrial)" 57 "Endometrioid" "VOA771" "VS07-31668" 1.14444982901701 "os.censored" "1.14444982901701" "dss.censored" 0 "0" "1" 1 0
+"100" "11-010 (VOA endometrial)" 82 "Endometrioid" "VOA863" "VS08-9465" 3.64428327232339 "os.censored" "3.64428327232339" "dss.censored" 0 "0" "1" 1 0
+"101" "11-010 (VOA endometrial)" 98 "Endometrioid" "VOA926" "VS08-19960" 0.128682157808132 "os.censored" "0.128682157808132" "dss.censored" 0 "1" "1" 0 1
+"102" "10-006 (High grade serous)" 19 "Serous" "VS03-29169" "VS03-29169" 7.02823615092501 "os.censored" "7.02823615092501" "dss.censored" 0 "1" "1" 1 0
+"103" "10-005 (High grade endometrioid)" 59 "Endometrioid" "VS08-26973" "VS08-26973" 1.02398142596258 "os.censored" "1.02398142596258" "dss.censored" 0 "0" "1" 1 0
+"104" "15-009 (Endometrioid Biopsies)" 20 "Serous" "02S-23322" "S02-15979" 10.3438551531728 "os.event" "Unk" "Unk" NA "1" "1" 0 1
+"105" "15-009 (Endometrioid Biopsies)" 13 "Dedifferentiated Endometrial Carcinoma" "US08-6157" "VS08-21386" 4.68184020961502 "os.censored" "4.68184020961502" "dss.censored" NA "0" "1" 1 0
+"106" "15-009 (Endometrioid Biopsies)" 16 "Endometrioid" "US09-2004" "VS09-2350" 3.84688922291492 "os.censored" "3.84688922291492" "dss.censored" NA "0" "1" 1 0
+"107" "15-009 (Endometrioid Biopsies)" 14 "Endometrioid" "VOA1015" "VS08-24936" 2.74601792606343 "os.event" "Unk" "Unk" NA "0" "1" 1 0
+"108" "15-009 (Endometrioid Biopsies)" 15 "Endometrioid" "VOA1020" "VS08-26144" 2.48591569219593 "os.censored" "2.48591569219593" "dss.censored" NA "0" "1" 1 0
+"109" "15-009 (Endometrioid Biopsies)" 9 "Endometrioid" "VOA607" "VS07-1436" 1.75226768079159 "os.event" "1.75226768079159" "dss.event" NA "0" "1" 1 0
+"110" "15-009 (Endometrioid Biopsies)" 10 "Endometrioid" "VOA700" "US07-3200" 4.73659857463976 "os.event" "4.73659857463976" "dss.censored" NA "0" "1" 1 0
+"111" "15-009 (Endometrioid Biopsies)" 25 "Endometrioid" "VOA784" "S07-17071" 5.0295558275221 "os.censored" "5.0295558275221" "dss.censored" NA "1" "0" 0 1
+"112" "15-009 (Endometrioid Biopsies)" 29 "Endometrioid" "VOA843" "S08-160" 4.46269266958894 "os.censored" "4.46269266958894" "dss.censored" NA "1" "1" 0 1
+"113" "15-009 (Endometrioid Biopsies)" 34 "Endometrioid" "VOA876" "S08-3473" 6.34375658811579 "os.censored" "6.34375658811579" "dss.censored" NA "0" "1" 1 0
+"114" "15-009 (Endometrioid Biopsies)" 8 "Endometrioid" "VS06-8811" "VS06-4395" 0.971846899261948 "os.event" "0.971846899261948" "dss.event" NA "1" "1" 1 1
+"115" "15-009 (Endometrioid Biopsies)" 33 "Mixed Endometrioid And Clear Cell" "VS07-33610" "S07-19914" 2.03427326066898 "os.censored" "2.03427326066898" "dss.censored" NA "0" "1" 1 0

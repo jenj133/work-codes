@@ -1,0 +1,36 @@
+---
+title: "MMRD uterine"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("dplyr")
+library(dplyr)
+```
+read file
+```{r}
+setwd('/Users/xyji/Documents/PhD')
+ dat <- read.csv("bc-370_mmrd_clin_full_2018-03-15.csv", header= TRUE) %>% as.data.frame()
+
+```
+
+clean data
+```{r}
+cdat <- dat %>% 
+  select(row.names=c("TMA","TMA.core.id","Histological.Subtype","patientID", "Accession.num","os.years","os.status" , "dss.years","dss.status","ass1.ihc.consolidated.numeric","MLH1.ihc.consolidated.numeric","MSH2.ihc.consolidated.numeric","MSH6.ihc.consolidated.numeric","PMS2.ihc.consolidated.numeric"))s
+
+colnames(cdat) <- c("TMA","TMA.core.id","Histological.Subtype","patientID", "Accession.num","os.years","os.status" , "dss.years","dss.status","ass1.ihc.consolidated.numeric","MLH1.ihc.consolidated.numeric","MSH2.ihc.consolidated.numeric","MSH6.ihc.consolidated.numeric","PMS2.ihc.consolidated.numeric")
+
+
+```
+sort dataframe
+```{r}
+cdat <- arrange(cdat,desc(ass1.ihc.consolidated.numeric))
+
+write.table(cdat, file = "../work-codes/output_data/MMRD_ASS_clindat.txt")
+
+```

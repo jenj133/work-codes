@@ -1,0 +1,43 @@
+---
+title: "Volcano_plot_SCCOHT"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggrepel)
+```
+
+```{r}
+dat <- read.csv("PECA_SCCOHT_vs_HGSC+SLCT_all.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+filter to keep FDR<0.01, slr>2
+```{r}
+dat$slr_abs <- abs(dat$slr)
+dat$log_fdr <- -log10(dat$p.fdr)
+dat$DE <- dat$slr_abs>1.5 & dat$log_fdr>2
+
+volcanol_plot <- ggplot(dat, aes(x=slr, y = log_fdr, colour = DE))+
+  geom_point() + geom_hline(aes(yintercept= 2) , linetype = 3)+
+  geom_vline(aes(xintercept = 1.5), linetype = 3)+
+  geom_vline(aes(xintercept = -1.5), linetype = 3) 
+
+plot <- volcanol_plot+theme_light() + 
+  scale_color_manual(values=c('#808080', '#A53205')) +
+  ggtitle("Differentially expressed protines in SCCOHT compared to HGSC and SLCT") +
+  xlab("Fold change")+
+  ylab("-log10(p.adj)")+
+  geom_label_repel(data=subset(dat, dat$log_fdr>15 & dat$slr_abs>2), aes(label=Gene), frontface = "bold", box.padding = 0.25, point.padding = 0.3, nudge_y = 0.25 ,colour = "black")+
+  theme(legend.position = "none")+
+  theme(plot.title = element_text(size = 13))
+
+plot
+```
+
+Print PDF
+```{r}
+pdf("volcano.pdf", width = 8, height= 6)
+plot
+dev.off()
+```

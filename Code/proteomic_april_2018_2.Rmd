@@ -1,0 +1,241 @@
+---
+title: "proteomics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(reshape2)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(pheatmap)
+library(sva)
+library(ggrepel)
+library(ggfortify)
+library(factoextra)
+```
+
+```{r}
+prodat <- read.csv("ProData_JJ_CCC.csv", header= TRUE, stringsAsFactors = FALSE)
+
+master <- read.csv("Proteomic_master_sheet.csv", header=TRUE, stringsAsFactors = FALSE)
+```
+make prodat where gene is row names
+```{r}
+prodat_2 <- prodat[!duplicated(prodat$Gene),]
+drop <- c("Protein.Accessions","Description","pepNum")
+
+# turn genes into row names
+prodat_2 <- prodat_2 %>% rownames_to_column() %>% column_to_rownames(var="Gene")
+prodat_2 <- prodat_2[,-1]
+prodat_3 <- prodat_2[!names(prodat_2) %in% drop]
+
+prodat_3 <- na.omit(prodat_3)
+```
+
+
+```{r}
+prodat_1 <- prodat[which(prodat$pepNum>2),] #drop values with smaller than 2 pepnum
+prodat_1_nona <- na.omit(prodat_1)
+prodat_filter <- prodat_1_nona[!names(prodat_1_nona) %in% drop]
+
+# delete duplicated samples in prodat_filter
+prodat_dedup <- prodat_filter[!duplicated(prodat_filter$Gene),]
+
+# turn genes into row names
+prodat_dedup <- prodat_dedup %>% rownames_to_column() %>% column_to_rownames(var="Gene")
+prodat_dedup <- prodat_dedup[,-1]
+logdat <- log2(prodat_dedup)
+
+#centre data so that mean is 0, varians is 1
+scalematrix <- t(scale(t(logdat)))
+str(scalematrix, max.level = 0, give.attr = FALSE)
+
+#check that mean is 0, varians = 1
+round(data.frame(avgBefore = rowMeans(head(logdat)), avgAfter = rowMeans(head(scalematrix)),varBefore = apply(head(logdat), 1, var), varAfter = apply(head(scalematrix), 1, var)),2)
+```
+
+```{r}
+#make a matrix for density map 
+prodat_filter_log <- log2(prodat_filter[,2:19])
+prodat_filter_log[,2:19] <- log2(prodat_filter[,2:19])
+```
+
+data exploration - density map
+```{r}
+dat_melt <- melt(prodat_filter_log, by = "Gene")
+
+dens <- dat_melt %>% 
+  ggplot(aes(x=value,color= variable)) +
+  geom_density() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r}
+#write a function to plot the heatmap with appropriate annotations
+heatmaptest <- function(Counts,annotations){
+  annotate = data.frame(
+    batch = annotations[,"Batch"],
+    stage = annotations[,"stage"],
+    risk = annotations[,"risk.designation"])#define colour bar annotation based on different parameters
+  
+  rownames(annotate) = annotations[["ID"]]
+  
+  pheatmap(Counts, annotation_col= annotate,
+           cluster_rows = TRUE,
+           clustering_distance_cols = "correlation", 
+           clustering_distance_rows = "correlation",
+           clustering_method = "ward.D2",
+           annotation_names_row = FALSE,
+           annotation_names_col = FALSE,
+           show_rownames = F,
+           fontsize = 6 
+          )
+}
+```
+
+heatmap without clustering
+```{r}
+#write a function to plot the heatmap with appropriate annotations
+heatmap_nocluster <- function(Counts,annotations){
+  annotate = data.frame(
+    batch = annotations[,"Batch"],
+    stage = annotations[,"stage"],
+    risk = annotations[,"risk.designation"])#define colour bar annotation based on different parameters
+  
+  rownames(annotate) = annotations[["ID"]]
+  
+  pheatmap(Counts, annotation_col= annotate,
+           cluster_rows = TRUE,
+           cluster_cols = FALSE,
+           annotation_names_row = FALSE,
+           annotation_names_col = FALSE,
+           show_rownames = F,
+           fontsize = 6 
+          )
+}
+```
+```{r}
+heatmaptest(scalematrix,master)
+```
+PCA analysis
+```{r}
+batch <- master$Batch
+stage <- master$stage
+risk <- master$risk.designation
+
+sprDat_PCA_original <- t(scalematrix) %>% as.data.frame()
+
+pcs_original <- prcomp(sprDat_PCA_original, scale = FALSE, center = FALSE)
+PCA_plot_1 <- autoplot(pcs_original,alpha=0.1)+
+  geom_text_repel(aes(label=row.names(sprDat_PCA_original), color = batch))+
+  geom_point(aes(shape=stage))
+
+PCA_plot_1+theme_light()
+```
+
+Combat
+```{r}
+batch <- master$Batch
+
+modcombat=model.matrix(~1, data = master)
+modsubtype <- model.matrix(~as.factor(risk_n), data=master)
+combat_dat <- ComBat(logdat, batch = batch, mod = modcombat, par.prior = TRUE, prior.plots = FALSE)
+
+scalematrix_combat <- t(scale(t(combat_dat)))
+str(scalematrix_combat, max.level = 0, give.attr = FALSE)
+
+mads_combat <- apply(scalematrix_combat,1,mad)
+top1000 <- scalematrix_combat[rev(order(mads_combat))[1:100],] %>% as.data.frame()
+```
+
+prepare combatdat for heatmap
+```{r}
+#drop pepnumber < = 2
+#pepnum = prodat_2 %>% rownames_to_column("Gene")
+#pepnum <- pepnum[,c(1,4)]
+
+#join 2 dataframes 
+#combat_dat_2 <- combat_dat %>% rownames_to_column("Gene")
+#join_combat <- left_join(combat_dat_2,pepnum,by = "Gene")
+#join_combat <- join_combat[which(join_combat$pepNum>2),]
+#join_combat <- join_combat %>% rownames_to_column() %>% column_to_rownames(var = "Gene")
+#join_combat <- join_combat[,-c(1,20)]
+
+#log and scale matrix
+#logcombat <- log2(combat_dat)
+#scalematrix_combat <- t(scale(t(combat_dat)))
+#str(scalematrix_combat, max.level = 0, give.attr = FALSE)
+```
+
+```{r}
+heatmaptest(scalematrix_combat,master)
+```
+
+```{r}
+heatmaptest(top1000,master)
+
+```
+```{r}
+heatmap_nocluster(top1000,master)
+```
+order columns based on risk designation
+```{R}
+
+
+```
+
+PCA analysis
+```{r}
+sprDat_PCA <- t(scalematrix_combat) %>% as.data.frame()
+
+pcs <- prcomp(sprDat_PCA)
+PCA_plot <- autoplot(pcs)+
+  geom_text_repel(aes(label=row.names(sprDat_PCA), color = batch))
+
+PCA_plot+theme_light()
+```
+
+What accounts for the most variantion? 
+```{r}
+#apend first 4 PCs to data
+
+Princomp_combat <- as.data.frame(pcs$x[,1:4]) %>% rownames_to_column(var = "ID")
+pc_combat <- merge(Princomp_combat,master, by = "ID")
+
+plot(pc_combat[,c("risk_n","stage_n","Batch","PC1","PC2","PC3")],pch=19,cex=0.8)
+```
+
+What if we take out VOA_113? Seems like it is an outlier
+```{r}
+remove_case <- c("VOA_113","VOA_213","VOA_371")
+log_matrix_remove <- logdat[-which(colnames(logdat) %in% remove_case)]
+master_remove <- master[-which(master$ID %in% remove_case),]
+
+#combat and heatmap
+batch_remove <- master_remove$Batch
+modcombat_remove <- model.matrix(~1, data=master_remove)
+combat_dat_remove <- ComBat(log_matrix_remove, batch = batch_remove, mod = modcombat_remove, par.prior = TRUE, prior.plots = FALSE)
+scalematrix_combat_remove <- t(scale(t(combat_dat_remove)))
+heatmaptest(scalematrix_combat_remove,master)
+
+#PCA plots
+sprDat_PCA_remove <- t(scalematrix_combat_remove) %>% as.data.frame()
+
+pcs_remove <- prcomp(sprDat_PCA_remove)
+PCA_plot_remove <- autoplot(pcs_remove)+
+  geom_text_repel(aes(label=row.names(sprDat_PCA_remove), color = batch_remove))
+
+PCA_plot_remove+theme_light()
+
+#PCA plot
+Princomp_combat_remove <- as.data.frame(pcs_remove$x[,1:4]) %>% rownames_to_column(var = "ID")
+pc_combat_remove <- merge(Princomp_combat_remove,master, by = "ID")
+
+plot(pc_combat_remove[,c("risk_n","stage_n","Batch","PC1","PC2","PC3")],pch=19,cex=0.8)
+
+#### Doesn't really change much, should probably keep 113..
+```
+

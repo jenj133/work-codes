@@ -1,0 +1,90 @@
+---
+title: "proteomics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(reshape2)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(pheatmap)
+```
+
+```{r}
+prodat <- read.csv("ProData_JJ_CCC.csv", header= TRUE, stringsAsFactors = FALSE)
+
+master <- read.csv("Proteomic_master_sheet.csv", header=TRUE, stringsAsFactors = FALSE)
+```
+
+```{r}
+prodat_1 <- prodat[which(prodat$pepNum>2),] #drop values with smaller than 2 pepnum
+
+prodat_1_nona <- na.omit(prodat_1)
+
+drop <- c("Protein.Accessions","Description","pepNum")
+prodat_filter <- prodat_1_nona[!names(prodat_1_nona) %in% drop]
+
+# delete duplicated samples in prodat_filter
+prodat_dedup <- prodat_filter[!duplicated(prodat_filter$Gene),]
+
+# turn genes into row names
+prodat_dedup <- prodat_dedup %>% rownames_to_column() %>% column_to_rownames(var="Gene")
+prodat_dedup <- prodat_dedup[,-1]
+logdat <- log2(prodat_dedup)
+
+#centre data so that mean is 0, varians is 1
+scalematrix <- t(scale(t(logdat)))
+str(scalematrix, max.level = 0, give.attr = FALSE)
+
+#check that mean is 0, varians = 1
+round(data.frame(avgBefore = rowMeans(head(logdat)), avgAfter = rowMeans(head(scalematrix)),varBefore = apply(head(logdat), 1, var), varAfter = apply(head(scalematrix), 1, var)),2)
+```
+
+```{r}
+#make a matrix for density map 
+prodat_filter_log[,2:19] <- log2(prodat_filter[,2:19])
+```
+
+data exploration
+```{r}
+dat_melt <- melt(prodat_filter_log, by = "Gene")
+
+dens <- dat_melt %>% 
+  ggplot(aes(x=value,color= variable)) +
+  geom_density() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r}
+#write a function to plot the heatmap with appropriate annotations
+heatmaptest <- function(Counts,annotations){
+  annotate = data.frame(
+    batch = annotations[,"Batch"],
+    stage = annotations[,"stage"],
+    risk = annotations[,"risk.designation"])#define colour bar annotation based on different parameters
+  
+  rownames(annotate) = annotations[["ID"]]
+  
+  pheatmap(Counts, annotation_col= annotate,
+           cluster_rows = TRUE,
+           clustering_distance_cols = "correlation", 
+           clustering_method = "average",
+           annotation_names_row = FALSE,
+           annotation_names_col = FALSE,
+           show_rownames = F,
+           fontsize = 6 
+          )
+}
+```
+
+```{r}
+heatmaptest(scalematrix,master)
+```
+
+Combat
+```{r}
+
+```
