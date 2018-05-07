@@ -7,6 +7,7 @@ output: html_document
 require("knitr")
 knitr::opts_chunk$set(echo = TRUE)
 library(ggrepel)
+library(ggthemes)
 opts_knit$set(root.dir = "../work-codes")
 ```
 
@@ -25,7 +26,7 @@ dat$log_fdr <- -log10(dat$p.fdr)
 dat$DE <- dat$slr_abs>1.5 & dat$log_fdr>2
 
 volcanol_plot <- ggplot(dat, aes(x=slr, y = log_fdr, colour = DE))+
-  geom_point() + geom_hline(aes(yintercept= 2) , linetype = 3)+
+  geom_point(size = 1.3, alpha = 0.8) + geom_hline(aes(yintercept= 2) , linetype = 3)+
   geom_vline(aes(xintercept = 1.5), linetype = 3)+
   geom_vline(aes(xintercept = -1.5), linetype = 3) 
 
@@ -41,8 +42,8 @@ plot <- volcanol_plot+theme_light() +
 plot
 ```
 ```{r}
-plot_ass <- volcanol_plot+theme_light() + 
-  scale_color_manual(values=c('#808080', '#A53205')) +
+plot_ass <- volcanol_plot+theme_hc() + 
+  scale_color_manual(values=c('#808080', 'darkorchid4')) +
   ggtitle("Differentially expressed proteins in SCCOHT compared to HGSC") +
   xlab("Fold change")+
   ylab("-log10(p.adj)")+
@@ -55,7 +56,7 @@ plot_ass
 
 Print PDF
 ```{r}
-pdf("volcano.pdf", width = 8, height= 6)
-plot
+pdf("volcano_sccoht.pdf", width = 8, height= 6)
+plot_ass
 dev.off()
 ```
