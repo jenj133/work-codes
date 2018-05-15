@@ -1,0 +1,58 @@
+---
+title: "Volcano_plot_SCCOHT"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggrepel)
+library(ggthemes)
+```
+
+```{r}
+dat <- read.csv("../Data/AllComparisons_HGSC_CCC.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+filter to keep FDR<0.01, slr>2
+```{r}
+dat$slr_abs <- abs(dat$slr)
+dat$log_fdr <- -log10(dat$p.fdr)
+dat$DE <- dat$slr_abs>1 & dat$log_fdr>1.3
+
+volcanol_plot <- ggplot(dat, aes(x=slr, y = log_fdr, colour = DE))+
+  geom_point() + geom_hline(aes(yintercept= 1.3) , linetype = 3)+
+  geom_vline(aes(xintercept = 1), linetype = 3)+
+  geom_vline(aes(xintercept = -1), linetype = 3) 
+
+plot <- volcanol_plot+theme_light() + 
+  scale_color_manual(values=c('#808080', '#A53205')) +
+  ggtitle("Differentially expressed protines in SCCOHT compared to HGSC and SLCT") +
+  xlab("Fold change")+
+  ylab("-log10(p.adj)")+
+  geom_label_repel(data=subset(dat, dat$log_fdr>15 & dat$slr_abs>2), aes(label=Gene), frontface = "bold", box.padding = 0.25, point.padding = 0.3, nudge_y = 0.25 ,colour = "black")+
+  theme(legend.position = "none")+
+  theme(plot.title = element_text(size = 13))
+
+plot
+```
+
+```{r}
+plot_ass <- volcanol_plot+theme_hc() + 
+  scale_color_manual(values=c('#808080', 'darkorchid4')) +
+  ggtitle("Differentially expressed proteins in CCC compared to HGSC") +
+  xlab("Fold change")+
+  ylab("-log10(p.adj)")+
+  geom_label_repel(data=dat[dat$Gene=="ASS1",], aes(label=Gene), frontface = "bold", box.padding = 1, point.padding = 1, nudge_y = 1 , nudge_x = 1, colour = "black")+
+  theme(legend.position = "none")+
+  theme(plot.title = element_text(size = 13))
+
+plot_ass
+```
+
+Print PDF
+```{r}
+pdf("volcano_CCC_HGSC.pdf", width = 8, height= 6)
+plot_ass
+dev.off()
+```
