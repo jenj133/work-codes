@@ -1,0 +1,88 @@
+---
+title: "TMA box plot"
+author: "Jenn Ji"
+date: "May 8, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(ggthemes)
+library(dunn.test)
+library(psych)
+```
+
+```{r}
+ASS_dat <- read.csv("../../Data/A-S_data/17-001_10-008_11_010_ASS1_histoscore_R.csv", header=TRUE, stringsAsFactors = FALSE)
+```
+
+```{r}
+# eliminate duplicates by VS number
+ASS_dat_dedup <- ASS_dat[!duplicated(ASS_dat$VS),]
+
+#exclude cases indicated by sheet
+ASS_dat_clean <- ASS_dat_dedup[!(ASS_dat_dedup$Inclusion == "exclude"),]
+
+
+keep = c("histoscore","Dx.code")
+ass_table = ASS_dat_clean[keep]
+
+order <- c("CCC","EC","EC (CC change)","SC","mixed EC/CCC","mixed SC/CCC","Mixed EC/SC", "AS", "Hyperplasia_w_CC")
+ass_table$Dx.code <- factor(ass_table$Dx.code, levels = order)
+
+```
+
+```{r}
+exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC")
+ass_table <- ass_table[-which(ass_table$Dx.code %in% exclude_dx),]
+```
+
+```{r}
+#summarize the data
+summary_table <- ass_table %>% 
+  group_by(Dx.code) %>% 
+  summarize(count = n())
+
+median_summary <- describeBy(x= ass_table, group = "Dx.code", mat = TRUE)
+```
+
+
+```{r}
+p = ass_table %>%
+  ggplot(aes(Dx.code,histoscore,color=Dx.code))+
+  geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
+  theme_hc()
+  
+#axis tickmark labels0
+p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 11)"))+
+  theme(axis.text.x=element_text(angle = -25, hjust = 0.05, vjust = 0.85)) +
+  ggtitle("ASS1 Histoscore in EC vs Mimics")+
+  scale_color_manual(values = c("#4dc38e",
+"#9750a1",
+"#759b44",
+"#6778d0",
+"#c1a03a",
+"#ba496b",
+"#b75b37")) +
+  theme(axis.title.x = element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.title.y = element_text(size = 9))
+
+p2
+```
+
+
+```{r}
+#statistic tests, kruskal willis and posthoc dunn's test
+kruskal.test(histoscore ~ Dx.code, data = ass_table)
+
+ 
+dun_test <- dunn.test(ass_table$histoscore,ass_table$Dx.code, method = "hs",list = FALSE)
+
+dunn_test <- dun_test$P.adjusted %>% as.data.frame()
+dunn_test$comparison <- dun_test$comparisons 
+```
