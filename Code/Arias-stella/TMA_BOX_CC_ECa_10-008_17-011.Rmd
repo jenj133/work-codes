@@ -13,10 +13,14 @@ library(tidyverse)
 library(ggthemes)
 library(dunn.test)
 library(psych)
+library(reshape2)
+library(gridExtra)
+library(cowplot)
 ```
 
 ```{r}
 ASS_dat <- read.csv("../../Data/A-S_data/17-001_10-008_11_010_ASS1_histoscore_R.csv", header=TRUE, stringsAsFactors = FALSE)
+other_dat <- read.csv("../../Data/A-S_data/17-001_11-010_ER_CTH_Napsin_HNF.csv", header=TRUE, stringsAsFactors = FALSE)
 ```
 
 ```{r}
@@ -58,8 +62,8 @@ p = ass_table %>%
   
 #axis tickmark labels0
 p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 11)"))+
-  theme(axis.text.x=element_text(angle = -23, hjust = 0.05, vjust = 0.85)) +
-  ggtitle("ASS1 Histoscore in EC vs Mimics")+
+  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  ggtitle("ASS1 in CCC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
 "#759b44",
@@ -85,4 +89,154 @@ dun_test <- dunn.test(ass_table$histoscore,ass_table$Dx.code, method = "hs",list
 
 dunn_test <- dun_test$P.adjusted %>% as.data.frame()
 dunn_test$comparison <- dun_test$comparisons 
+```
+
+other markers
+```{r}
+other_clean <- other_dat[!(other_dat$Inclusion == "exclude"),]
+
+keep2 = c("Dx.code","CTH","HNF1B","Napsin","ER")
+other_table = other_clean[keep2]
+
+other_melt <- reshape2::melt(other_table, id = "Dx.code")
+
+# exclude N/As
+other_melt <- other_melt[!(other_melt$value == "n/a"),]
+other_melt$value <- as.numeric(other_melt$value)
+
+```
+
+
+```{r}
+exclude_dx2 <- c("Mixed EC/SC","Hyperplasia_w_CC","polyp")
+other_melt <- other_melt[-which(other_melt$Dx.code %in% exclude_dx2),]
+```
+
+```{r}
+summary_table2 <- other_melt %>% 
+  group_by(Dx.code,variable) %>% 
+  summarize(count = n())
+```
+
+```{r}
+order <- c("CCC","EC","EC (CC change)","SC","mixed EC/CCC","mixed SC/CCC","Mixed EC/SC", "AS", "Hyperplasia_w_CC")
+other_melt$Dx.code <- factor(other_melt$Dx.code, levels = order)
+
+
+CTH <- subset(other_melt, variable == "CTH")
+Napsin <- subset(other_melt, variable == "Napsin")
+ER <- subset(other_melt, variable == "ER")
+HNF1B <- subset (other_melt, variable =="HNF1B")
+```
+
+```{r}
+p_cth = CTH %>%
+  ggplot(aes(Dx.code,value,color=Dx.code))+
+  geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
+  theme_hc()
+  
+#axis tickmark labels0
+p3= p_cth + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
+  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  ggtitle("CTH in CCC vs Mimics")+
+  scale_color_manual(values = c("#4dc38e",
+"#9750a1",
+"#759b44",
+"#6778d0",
+"#c1a03a",
+"#ba496b",
+"#b75b37")) +
+  theme(axis.title.x = element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.title.y = element_text(size = 9))
+
+p3
+```
+
+```{r}
+p_er = ER %>%
+  ggplot(aes(Dx.code,value,color=Dx.code))+
+  geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
+  theme_hc()
+  
+#axis tickmark labels0
+p4= p_er + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
+ theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  ggtitle("ER in CCC vs Mimics")+
+  scale_color_manual(values = c("#4dc38e",
+"#9750a1",
+"#759b44",
+"#6778d0",
+"#c1a03a",
+"#ba496b",
+"#b75b37")) +
+  theme(axis.title.x = element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.title.y = element_text(size = 9))
+
+p4
+```
+
+```{r}
+p_nap = Napsin %>%
+  ggplot(aes(Dx.code,value,color=Dx.code))+
+  geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
+  theme_hc()
+  
+#axis tickmark labels0
+p5= p_nap + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 6)"))+
+  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  ggtitle("Napsin in CCC vs Mimics")+
+  scale_color_manual(values = c("#4dc38e",
+"#9750a1",
+"#759b44",
+"#6778d0",
+"#c1a03a",
+"#ba496b",
+"#b75b37")) +
+  theme(axis.title.x = element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.title.y = element_text(size = 9))
+
+p5
+```
+
+```{r}
+p_hnf = HNF1B %>%
+  ggplot(aes(Dx.code,value,color=Dx.code))+
+  geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
+  theme_hc()
+  
+#axis tickmark labels0
+p6= p_hnf + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
+  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  ggtitle("HNF1B in CCC vs Mimics")+
+  scale_color_manual(values = c("#4dc38e",
+"#9750a1",
+"#759b44",
+"#6778d0",
+"#c1a03a",
+"#ba496b",
+"#b75b37")) +
+  theme(axis.title.x = element_blank())+
+  theme(legend.position = "none")+
+  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.title.y = element_text(size = 9))
+
+p6
+```
+
+```{r}
+grids <- plot_grid(p2,p3,p4,p5,p6, ncol = 3)
+grids
+
+```
+
+```{r}
+pdf("asplot.pdf", width = 11.5, height = 8.5)
+grids
+dev.off()
 ```
