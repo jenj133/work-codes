@@ -58,7 +58,7 @@ p = ass_table %>%
   
 #axis tickmark labels0
 p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 11)"))+
-  theme(axis.text.x=element_text(angle = -25, hjust = 0.05, vjust = 0.85)) +
+  theme(axis.text.x=element_text(angle = -23, hjust = 0.05, vjust = 0.85)) +
   ggtitle("ASS1 Histoscore in EC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
