@@ -34,13 +34,13 @@ ASS_dat_clean <- ASS_dat_dedup[!(ASS_dat_dedup$Inclusion == "exclude"),]
 keep = c("histoscore","Dx.code")
 ass_table = ASS_dat_clean[keep]
 
-order <- c("CCC","EC","EC (CC change)","SC","mixed EC/CCC","mixed SC/CCC","Mixed EC/SC", "AS", "Hyperplasia_w_CC")
+order <- c("CCC","EC","EC (CC change)","SC","mixed SC/CCC", "AS", "Hyperplasia_w_CC","mixed EC/CCC","Mixed EC/SC")
 ass_table$Dx.code <- factor(ass_table$Dx.code, levels = order)
 
 ```
 
 ```{r}
-exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC")
+exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC","mixed EC/CCC")
 ass_table <- ass_table[-which(ass_table$Dx.code %in% exclude_dx),]
 ```
 
@@ -62,18 +62,17 @@ p = ass_table %>%
   
 #axis tickmark labels0
 p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 11)"))+
-  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.76)) +
   ggtitle("ASS1 in CCC vs Mimics")+
-  scale_color_manual(values = c("#4dc38e",
-"#9750a1",
-"#759b44",
-"#6778d0",
-"#c1a03a",
-"#ba496b",
-"#b75b37")) +
+  scale_color_manual(values = c("#ba4661",
+"#56ae6c",
+"#ae559b",
+"#aaa23f",
+"#6c67bf",
+"#b85f36")) +
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
-  theme(axis.text.x = element_text(size = 9))+
+  theme(axis.text.x = element_text(size = 8))+
   theme(axis.title.y = element_text(size = 9))
 
 p2
@@ -108,7 +107,7 @@ other_melt$value <- as.numeric(other_melt$value)
 
 
 ```{r}
-exclude_dx2 <- c("Mixed EC/SC","Hyperplasia_w_CC","polyp")
+exclude_dx2 <- c("Mixed EC/SC","Hyperplasia_w_CC","polyp","mixed EC/CCC")
 other_melt <- other_melt[-which(other_melt$Dx.code %in% exclude_dx2),]
 ```
 
@@ -137,7 +136,7 @@ p_cth = CTH %>%
   
 #axis tickmark labels0
 p3= p_cth + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
-  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
   ggtitle("CTH in CCC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
@@ -162,7 +161,7 @@ p_er = ER %>%
   
 #axis tickmark labels0
 p4= p_er + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
- theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+ theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
   ggtitle("ER in CCC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
@@ -187,7 +186,7 @@ p_nap = Napsin %>%
   
 #axis tickmark labels0
 p5= p_nap + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 6)"))+
-  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
   ggtitle("Napsin in CCC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
@@ -212,7 +211,7 @@ p_hnf = HNF1B %>%
   
 #axis tickmark labels0
 p6= p_hnf + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
-  theme(axis.text.x=element_text(angle = 25, hjust = 01, vjust = 0.9)) +
+  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
   ggtitle("HNF1B in CCC vs Mimics")+
   scale_color_manual(values = c("#4dc38e",
 "#9750a1",
@@ -236,7 +235,7 @@ grids
 ```
 
 ```{r}
-pdf("asplot.pdf", width = 11.5, height = 8.5)
+pdf("asplot2.pdf", width = 16, height = 8.5)
 grids
 dev.off()
 ```
