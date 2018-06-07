@@ -31,7 +31,7 @@ ASS_dat_dedup <- ASS_dat[!duplicated(ASS_dat$VS),]
 ASS_dat_clean <- ASS_dat_dedup[!(ASS_dat_dedup$Inclusion == "exclude"),]
 
 
-keep = c("histoscore","Dx.code")
+keep = c("histoscore","Dx.code","ASS.c1","ASS.c2")
 ass_table = ASS_dat_clean[keep]
 
 order <- c("CCC","EC","EC (CC change)","SC","mixed SC/CCC", "AS", "Hyperplasia_w_CC","mixed EC/CCC","Mixed EC/SC")
@@ -59,11 +59,12 @@ p = ass_table %>%
   ggplot(aes(Dx.code,histoscore,color=Dx.code))+
   geom_boxplot(outlier.shape=NA, width = 0.5, boxlwd = 5)+geom_jitter(size = 1, width = 0.2, alpha = 0.8)+ 
   theme_hc()
+
   
 #axis tickmark labels0
 p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 11)"))+
-  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.76)) +
-  ggtitle("ASS1 in CCC vs Mimics")+
+  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8)) +
+  ggtitle("ASS1")+
   scale_color_manual(values = c("#ba4661",
 "#56ae6c",
 "#ae559b",
@@ -73,7 +74,9 @@ p2= p + scale_x_discrete(labels=c("CCC"="ECCC (n=62)","EC" = "EC (n = 132)","EC 
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
   theme(axis.text.x = element_text(size = 8))+
-  theme(axis.title.y = element_text(size = 9))
+  theme(axis.title.y = element_text(size = 9))+
+  ylab("Histoscore")+
+  scale_y_continuous(limit=c(0,350))
 
 p2
 ```
@@ -115,6 +118,8 @@ other_melt <- other_melt[-which(other_melt$Dx.code %in% exclude_dx2),]
 summary_table2 <- other_melt %>% 
   group_by(Dx.code,variable) %>% 
   summarize(count = n())
+
+median_summary2 <- describeBy(x= other_melt, group = c("Dx.code","variable"), mat = TRUE)
 ```
 
 ```{r}
@@ -136,19 +141,20 @@ p_cth = CTH %>%
   
 #axis tickmark labels0
 p3= p_cth + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
-  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
-  ggtitle("CTH in CCC vs Mimics")+
-  scale_color_manual(values = c("#4dc38e",
-"#9750a1",
-"#759b44",
-"#6778d0",
-"#c1a03a",
-"#ba496b",
-"#b75b37")) +
+  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
+  ggtitle("CTH")+
+  scale_color_manual(values = c("#ba4661",
+"#56ae6c",
+"#ae559b",
+"#aaa23f",
+"#6c67bf",
+"#b85f36")) +
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
-  theme(axis.text.x = element_text(size = 9))+
-  theme(axis.title.y = element_text(size = 9))
+  theme(axis.text.x = element_text(size = 8))+
+  theme(axis.title.y = element_text(size = 9))+
+  ylab("Histoscore")+
+  scale_y_continuous(limit=c(0,350))
 
 p3
 ```
@@ -160,20 +166,21 @@ p_er = ER %>%
   theme_hc()
   
 #axis tickmark labels0
-p4= p_er + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
- theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
-  ggtitle("ER in CCC vs Mimics")+
-  scale_color_manual(values = c("#4dc38e",
-"#9750a1",
-"#759b44",
-"#6778d0",
-"#c1a03a",
-"#ba496b",
-"#b75b37")) +
+p4= p_er + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
+ theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
+  ggtitle("ER")+
+  scale_color_manual(values = c("#ba4661",
+"#56ae6c",
+"#ae559b",
+"#aaa23f",
+"#6c67bf",
+"#b85f36")) +
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
-  theme(axis.text.x = element_text(size = 9))+
-  theme(axis.title.y = element_text(size = 9))
+  theme(axis.text.x = element_text(size = 8))+
+  theme(axis.title.y = element_text(size = 9))+
+  ylab("Histoscore")+
+  scale_y_continuous(limit=c(0,350))
 
 p4
 ```
@@ -185,20 +192,21 @@ p_nap = Napsin %>%
   theme_hc()
   
 #axis tickmark labels0
-p5= p_nap + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 6)"))+
-  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
-  ggtitle("Napsin in CCC vs Mimics")+
-  scale_color_manual(values = c("#4dc38e",
-"#9750a1",
-"#759b44",
-"#6778d0",
-"#c1a03a",
-"#ba496b",
-"#b75b37")) +
+p5= p_nap + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 6)"))+
+  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
+  ggtitle("Napsin")+
+  scale_color_manual(values = c("#ba4661",
+"#56ae6c",
+"#ae559b",
+"#aaa23f",
+"#6c67bf",
+"#b85f36")) +
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
-  theme(axis.text.x = element_text(size = 9))+
-  theme(axis.title.y = element_text(size = 9))
+  theme(axis.text.x = element_text(size = 8))+
+  theme(axis.title.y = element_text(size = 9)) +
+  scale_y_continuous(limit=c(0,350))+
+  ylab("Histoscore")
 
 p5
 ```
@@ -211,19 +219,20 @@ p_hnf = HNF1B %>%
   
 #axis tickmark labels0
 p6= p_hnf + scale_x_discrete(labels=c("CCC"="ECCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
-  theme(axis.text.x=element_text(angle = - 22, hjust = 0.4, vjust = 0.6))  +
-  ggtitle("HNF1B in CCC vs Mimics")+
-  scale_color_manual(values = c("#4dc38e",
-"#9750a1",
-"#759b44",
-"#6778d0",
-"#c1a03a",
-"#ba496b",
-"#b75b37")) +
+  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
+  ggtitle("HNF1B")+
+  scale_color_manual(values = c("#ba4661",
+"#56ae6c",
+"#ae559b",
+"#aaa23f",
+"#6c67bf",
+"#b85f36")) +
   theme(axis.title.x = element_blank())+
   theme(legend.position = "none")+
   theme(axis.text.x = element_text(size = 9))+
-  theme(axis.title.y = element_text(size = 9))
+  theme(axis.title.y = element_text(size = 9))+
+  ylab("Histoscore")+
+  scale_y_continuous(limit=c(0,350))
 
 p6
 ```
@@ -234,8 +243,31 @@ grids
 
 ```
 
+Dunn's test using bj multiple test comparison
+```{R}
+dun_test_cth <- dunn.test(CTH$value,CTH$Dx.code, method = "hs",list = FALSE)
+
+dunn_test_cth <- dun_test_cth$P.adjusted %>% as.data.frame()
+dunn_test_cth$comparison <- dun_test_cth$comparisons 
+```
+
+ER
 ```{r}
-pdf("asplot2.pdf", width = 16, height = 8.5)
+dunn.test(ER$value,ER$Dx.code, method = "hs",list = FALSE)
+```
+Napsin
+```{r}
+dunn.test(Napsin$value,Napsin$Dx.code, method = "hs",list = FALSE)
+```
+
+HNF1b
+```{r}
+dunn.test(HNF1B$value,HNF1B$Dx.code, method = "hs",list = FALSE)
+```
+
+```{r}
+pdf("asplot2.pdf", width = 13, height = 8.5)
 grids
 dev.off()
 ```
+
