@@ -1,0 +1,102 @@
+---
+title: "Sen and Spec calc"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(ggthemes)
+library(dunn.test)
+library(psych)
+library(reshape2)
+library(gridExtra)
+library(cowplot)
+library(pheatmap)
+```
+
+```{r}
+ASS_dat <- read.csv("../../Data/A-S_data/17-001_10-008_11_010_ASS1_histoscore_R.csv", header=TRUE, stringsAsFactors = FALSE)
+other_dat <- read.csv("../../Data/A-S_data/17-001_11-010_ER_CTH_Napsin_HNF.csv", header=TRUE, stringsAsFactors = FALSE)
+```
+
+process ASS1 data
+```{r}
+# eliminate duplicates by VS number
+ASS_dat_dedup <- ASS_dat[!duplicated(ASS_dat$VS),]
+
+#exclude cases indicated by sheet
+ASS_dat_clean <- ASS_dat_dedup[!(ASS_dat_dedup$Inclusion == "exclude"),]
+```
+
+process other markers data
+```{r}
+other_clean <- other_dat[!(other_dat$Inclusion == "exclude"),]
+other_clean$CTH <- as.numeric(other_clean$CTH)
+other_clean$HNF1B <- as.numeric(other_clean$HNF1B)
+other_clean$Napsin <- as.numeric(other_clean$Napsin)
+other_clean$ER <- as.numeric(other_clean$ER)
+```
+join frame 
+```{r}
+join2 <- merge(ASS_dat_clean, other_clean, by = c("VS", "Inclusion","Dx","Dx.code"), all= TRUE )
+
+join <- dplyr::left_join(ASS_dat_clean,other_clean, by = c("VS", "Inclusion","Dx","Dx.code" ))
+
+keep_heatmap <- c("VS","Dx.code","ASS1","CTH","HNF1B","Napsin","ER")
+join_sens <- join2[keep_heatmap]
+
+```
+
+```{r}
+# count number of each subtype
+
+join_sens %>%
+  group_by(Dx.code) %>% 
+  summarise(count = n())
+```
+
+hnf1b
+```{r}
+join_sens$hnf1b_dx <- ifelse(join_sens$HNF1B > 0, "CCC",
+                             ifelse(join_sens$HNF1B == 0, "non_CC", NA))
+
+hnf1b <- join_sens %>% 
+  group_by(Dx.code,hnf1b_dx) %>% 
+  summarise(count = n())
+  
+```
+
+ER
+```{r}
+join_sens$er_dx <- ifelse(join_sens$ER == 0, "CCC",
+                             ifelse(join_sens$ER > 0, "non_CC", NA))
+ER <- join_sens %>% 
+  group_by(Dx.code,er_dx) %>% 
+  summarise(count = n())
+  
+```
+
+hnf1b + er
+```{r}
+join_sens$hnf1b_er_dx <- ifelse(join_sens$HNF1B > 0 & join_sens$ER == 0, "CCC",
+                                ifelse(join_sens$HNF1B==0 & join_sens$ER == 0, "non-CC",
+                                       ifelse(join_sens$HNF1B>0 & join_sens$ER > 0, "non-CC",
+                                              NA)))
+
+ER_nnf2b <- join_sens %>% 
+  group_by(Dx.code,hnf1b_er_dx) %>% 
+  summarise(count = n())
+```
+
+napsin
+```{r}
+join_sens$nap_dx <- ifelse(join_sens$Napsin > 0, "CCC",
+                             ifelse(join_sens$Napsin == 0, "non_CC", NA))
+napsin <- join_sens %>% 
+  group_by(Dx.code,nap_dx) %>% 
+  summarise(count = n())
+  
+```
