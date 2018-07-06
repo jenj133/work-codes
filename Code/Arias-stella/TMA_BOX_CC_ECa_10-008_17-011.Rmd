@@ -32,16 +32,16 @@ ASS_dat_dedup <- ASS_dat[!duplicated(ASS_dat$VS),]
 ASS_dat_clean <- ASS_dat_dedup[!(ASS_dat_dedup$Inclusion == "exclude"),]
 
 
-keep = c("ASS1","Dx.code","ASS.c1","ASS.c2")
+keep = c("ASS1","VS","Dx.code","ASS.c1","ASS.c2","ASS1")
 ass_table = ASS_dat_clean[keep]
 
-order <- c("CCC","EC","EC (CC change)","SC","mixed SC/CCC", "AS", "Hyperplasia_w_CC","mixed EC/CCC","Mixed EC/SC")
+order <- c("CCC","EC","SC","EC (CC change)","mixed SC/CCC", "AS", "Hyperplasia_w_CC","mixed EC/CCC","Mixed EC/SC")
 ass_table$Dx.code <- factor(ass_table$Dx.code, levels = order)
 
 ```
 
 ```{r}
-exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC","mixed EC/CCC")
+exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC","mixed EC/CCC","mixed SC/CCC")
 ass_table <- ass_table[-which(ass_table$Dx.code %in% exclude_dx),]
 ```
 
@@ -63,7 +63,7 @@ p = ass_table %>%
 
   
 #axis tickmark labels0
-p2= p + scale_x_discrete(labels=c("CCC"="CCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 25)"))+
+p2= p + scale_x_discrete(labels=c("CCC"="CCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 22)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8)) +
   ggtitle("ASS1")+
   scale_color_manual(values = c("#ba4661",
@@ -97,10 +97,10 @@ dunn_test$comparison <- dun_test$comparisons
 other markers
 ```{r}
 other_clean <- other_dat[!(other_dat$Inclusion == "exclude"),]
-other_clean$CTH <- as.numeric(other_clean$CTH)
-other_clean$HNF1B <- as.numeric(other_clean$HNF1B)
-other_clean$Napsin <- as.numeric(other_clean$Napsin)
-other_clean$ER <- as.numeric(other_clean$ER)
+#other_clean$CTH <- as.numeric(other_clean$CTH)
+#other_clean$HNF1B <- as.numeric(other_clean$HNF1B)
+#other_clean$Napsin <- as.numeric(other_clean$Napsin)
+#other_clean$ER <- as.numeric(other_clean$ER)
 
 keep2 = c("Dx.code","CTH","HNF1B","Napsin","ER")
 other_table = other_clean[keep2]
@@ -115,7 +115,7 @@ other_melt$value <- as.numeric(other_melt$value)
 
 
 ```{r}
-exclude_dx2 <- c("Mixed EC/SC","Hyperplasia_w_CC","polyp","mixed EC/CCC")
+exclude_dx2 <- c("Mixed EC/SC","Hyperplasia_w_CC","polyp","mixed EC/CCC","mixed SC/CCC","CC_polyp")
 other_melt <- other_melt[-which(other_melt$Dx.code %in% exclude_dx2),]
 ```
 
@@ -128,7 +128,7 @@ summary_table2 <- other_melt %>%
 ```
 
 ```{r}
-order <- c("CCC","EC","EC (CC change)","SC","mixed EC/CCC","mixed SC/CCC","Mixed EC/SC", "AS", "Hyperplasia_w_CC")
+order <- c("CCC","EC","SC","EC (CC change)", "AS")
 other_melt$Dx.code <- factor(other_melt$Dx.code, levels = order)
 
 
@@ -145,7 +145,7 @@ p_cth = CTH %>%
   theme_hc()
   
 #axis tickmark labels0
-p3= p_cth + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
+p3= p_cth + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("CTH")+
   scale_color_manual(values = c("#ba4661",
@@ -171,7 +171,7 @@ p_er = ER %>%
   theme_hc()
   
 #axis tickmark labels0
-p4= p_er + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
+p4= p_er + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 7)"))+
  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("ER")+
   scale_color_manual(values = c("#ba4661",
@@ -197,7 +197,7 @@ p_nap = Napsin %>%
   theme_hc()
   
 #axis tickmark labels0
-p5= p_nap + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 14)"))+
+p5= p_nap + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("Napsin")+
   scale_color_manual(values = c("#ba4661",
@@ -223,7 +223,7 @@ p_hnf = HNF1B %>%
   theme_hc()
   
 #axis tickmark labels0
-p6= p_hnf + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed EC/CCC" = "Mixed EC/CCC (n = 2)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 13)"))+
+p6= p_hnf + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("HNF1B")+
   scale_color_manual(values = c("#ba4661",
@@ -279,7 +279,7 @@ dev.off()
 plot heatmap
 ```{R}
 #join data
-join <- dplyr::left_join(ASS_dat_clean,other_clean, by = c("VS", "Inclusion","Dx","Dx.code" ))
+join <- dplyr::full_join(ASS_dat_clean,other_clean, by = c("VS", "Inclusion","Dx","Dx.code" ))
 keep_heatmap <- c("VS","Dx.code","ASS1","CTH","HNF1B","Napsin","ER")
 join_heatmap <- join[keep_heatmap]
 join_heatmap_na <- na.omit(join_heatmap)

@@ -58,17 +58,6 @@ join_sens %>%
   summarise(count = n())
 ```
 
-hnf1b
-```{r}
-join_sens$hnf1b_dx <- ifelse(join_sens$HNF1B > 0, "CCC",
-                             ifelse(join_sens$HNF1B == 0, "non_CC", NA))
-
-hnf1b <- join_sens %>% 
-  group_by(Dx.code,hnf1b_dx) %>% 
-  summarise(count = n())
-  
-```
-
 ER
 ```{r}
 join_sens$er_dx <- ifelse(join_sens$ER == 0, "CCC",
@@ -97,6 +86,27 @@ join_sens$nap_dx <- ifelse(join_sens$Napsin > 0, "CCC",
                              ifelse(join_sens$Napsin == 0, "non_CC", NA))
 napsin <- join_sens %>% 
   group_by(Dx.code,nap_dx) %>% 
+  summarise(count = n())
+  
+```
+
+ass1
+```{r}
+join_sens$ass_dx <- ifelse(join_sens$ASS1 > 0, "CCC",
+                             ifelse(join_sens$ASS1 == 0, "non_CC", NA))
+ass <- join_sens %>% 
+  group_by(Dx.code,ass_dx) %>% 
+  summarise(count = n())
+  
+```
+
+ass1+ER
+```{r}
+join_sens$ass_ER_dx <- ifelse(join_sens$ASS1 == 0 & join_sens$ER >0, "AS",
+                             ifelse(join_sens$ASS1 > 0 & join_sens$ER ==0, "CCC",
+                                    ifelse(join_sens$ASS1 > 0 & join_sens$ER >0, "non-CCC" , NA)))
+ass_ER <- join_sens %>% 
+  group_by(Dx.code,ass_ER_dx) %>% 
   summarise(count = n())
   
 ```
