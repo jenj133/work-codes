@@ -43,6 +43,8 @@ ass_table$Dx.code <- factor(ass_table$Dx.code, levels = order)
 ```{r}
 exclude_dx <- c("Mixed EC/SC","Hyperplasia_w_CC","mixed EC/CCC","mixed SC/CCC")
 ass_table <- ass_table[-which(ass_table$Dx.code %in% exclude_dx),]
+
+write.table(ass_table,"asstable.txt")
 ```
 
 ```{r}
@@ -63,7 +65,7 @@ p = ass_table %>%
 
   
 #axis tickmark labels0
-p2= p + scale_x_discrete(labels=c("CCC"="CCC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 22)"))+
+p2= p + scale_x_discrete(labels=c("CCC"="CC (n=62)","EC" = "EC (n = 132)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 22)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8)) +
   ggtitle("ASS1")+
   scale_color_manual(values = c("#ba4661",
@@ -145,7 +147,7 @@ p_cth = CTH %>%
   theme_hc()
   
 #axis tickmark labels0
-p3= p_cth + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
+p3= p_cth + scale_x_discrete(labels=c("CCC"="CC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("CTH")+
   scale_color_manual(values = c("#ba4661",
@@ -171,7 +173,7 @@ p_er = ER %>%
   theme_hc()
   
 #axis tickmark labels0
-p4= p_er + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 7)"))+
+p4= p_er + scale_x_discrete(labels=c("CCC"="CC (n=50)","EC" = "EC (n = 135)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 14)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 7)"))+
  theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("ER")+
   scale_color_manual(values = c("#ba4661",
@@ -197,7 +199,7 @@ p_nap = Napsin %>%
   theme_hc()
   
 #axis tickmark labels0
-p5= p_nap + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
+p5= p_nap + scale_x_discrete(labels=c("CCC"="CC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)","mixed SC/CCC" = "Mixed SC/CCC (n = 5)", "AS" = "AS (n = 9)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("Napsin")+
   scale_color_manual(values = c("#ba4661",
@@ -223,7 +225,7 @@ p_hnf = HNF1B %>%
   theme_hc()
   
 #axis tickmark labels0
-p6= p_hnf + scale_x_discrete(labels=c("CCC"="CCC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
+p6= p_hnf + scale_x_discrete(labels=c("CCC"="CC (n=50)","EC" = "EC (n = 136)","EC (CC change)" = "EC with CC change (n = 5)","SC" = "SC (n = 16)", "AS" = "AS (n = 11)"))+
   theme(axis.text.x=element_text(angle = - 25, hjust = 0.15, vjust = 0.8))  +
   ggtitle("HNF1B")+
   scale_color_manual(values = c("#ba4661",
@@ -360,4 +362,8 @@ dev.off()
 pdf("CTH_HNF1b.pdf", width = 13, height = 8.5)
 CTH_HNF1B
 dev.off()
+```
+
+```{r}
+write.table(join, "join.txt")
 ```
