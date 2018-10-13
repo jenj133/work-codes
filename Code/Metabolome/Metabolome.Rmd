@@ -21,6 +21,8 @@ master <- read.csv("../../Data/Metabolome/Master_sheet.csv", header = TRUE, stri
 
 ```
 
+
+
 ```{r}
 Comp_master <- data[,1:12]
 dat_heatmap <- data[-c(1,3:14)]
@@ -55,9 +57,59 @@ top500 <- dat_log[rev(order(mads))[1:130],] %>% as.data.frame()
 top500_master <- Comp_master[rev(order(mads))[1:130],] %>% as.data.frame()
 ```
 
+Data without xenobiotics
+```{r}
+dat_no_xenobiotics <- data[!data$SUPER_PATHWAY=="Xenobiotics",]
+dat_heatmap_noxeno <- dat_no_xenobiotics[-c(1,3:14)]
+
+#turn first column into row names
+dat_heatmap_noxeno <- rownames_to_column(dat_heatmap_noxeno)
+dat_heatmap_noxeno <- dat_heatmap_noxeno[,-1]
+dat_heatmap_noxeno <- column_to_rownames(dat_heatmap_noxeno,var="BIOCHEMICAL")
+dat_log_noxeno <- log2(dat_heatmap_noxeno) %>% as.data.frame()
+
+#Take the top 100 most variable by MAD
+mads_noxeno = apply(dat_log_noxeno,1,mad)
+top500_noxeno <- dat_log_noxeno[rev(order(mads_noxeno))[1:130],] %>% as.data.frame()
+top500_master_noxeno <- Comp_master[rev(order(mads_noxeno))[1:130],] %>% as.data.frame()
+
+```
+
 heatmap function
 ```{r}
 heatmapfnx <- function(dat,annotations,row_annotations){
+  annotate = data.frame(
+    Stage = annotations[,"GROUP"],
+    age = annotations[,"AGE"],
+    BMI = annotations[,"BMI"],
+    Risk = annotations[,"Risk_group"])#, 
+    #ARID1a = annotations[,"ARID1a"])
+  
+  row_annotate =data.frame(
+    super_pathway = row_annotations[,"SUPER_PATHWAY"])
+    #sub_pathway = row_annotations[,"SUB_PATHWAY"])
+  
+  rownames(annotate) = annotations[["CLIENT_IDENTIFIER"]]
+  rownames(row_annotate) = row_annotations[["BIOCHEMICAL"]]
+  
+  pheatmap(dat, annotation_col= annotate,
+           annotation_row = row_annotate,
+           cluster_rows = TRUE,
+           cluster_cols = TRUE,
+           clustering_distance_cols = "euclidean", 
+           clustering_method = "complete",
+           annotation_names_row = FALSE,
+           annotation_names_col = FALSE,
+           show_rownames = T,
+           fontsize = 5,
+           cellheight = 4,
+          main = "top 130 most variable biochemicals"
+          )
+}
+```
+
+```{r}
+heatmapfnx_nolabel <- function(dat,annotations,row_annotations){
   annotate = data.frame(
     Stage = annotations[,"GROUP"],
     age = annotations[,"AGE"],
@@ -84,6 +136,7 @@ heatmapfnx <- function(dat,annotations,row_annotations){
           main = "top 130 most variable biochemicals"
           )
 }
+
 ```
 
 heatmap function, cluster col = F
@@ -123,7 +176,36 @@ heatmapclip <- function(dat,annotations){
     Stage = annotations[,"GROUP"],
     age = annotations[,"AGE"],
     BMI = annotations[,"BMI"],
-    Risk = annotations[,"Risk_group"]) # here we identify different annotations for the heatmap
+    Risk = annotations[,"Risk_group"],
+    ARID1A = annotations[,"ARID1a"]) # here we identify different annotations for the heatmap
+  
+  rownames(annotate) = annotations[["CLIENT_IDENTIFIER"]]
+  
+  pheatmap(dat, annotation_col= annotate,
+           cluster_rows = clust,
+           cluster_cols = clust2,
+           #clustering_distance_cols = "euclidean", 
+           #clustering_method = "complete",
+           annotation_names_row = FALSE,
+           annotation_names_col = FALSE,
+           show_rownames = F,
+           fontsize = 6, 
+           main = "All biochemicals (N = 830)"
+          )
+}
+```
+
+
+```{r}
+heatmapclip_GENOMIC <- function(dat,annotations){
+  annotate = data.frame(
+    Stage = annotations[,"GROUP"],
+    Risk = annotations[,"Risk_group"],
+    ARID1A = annotations[,"ARID1a"],
+    PIK3CA = annotations[,"PIK3CA"],
+    subgroup = annotations[,"subgroup"],
+    PPPR21A = annotations[,"PPR21A"],
+    Kategis = annotations [,"Kataegis"]) # here we identify different annotations for the heatmap
   
   rownames(annotate) = annotations[["CLIENT_IDENTIFIER"]]
   
@@ -145,13 +227,22 @@ heatmapclip <- function(dat,annotations){
 ```{r}
 Heatmap100 <- heatmapfnx(top500,master,top500_master)
 
-pdf("../../output_data/heatmap_top100.pdf", width = 7, height = 6)
+Heatmap100_nolable <- heatmapfnx_nolabel(top500,master,top500_master)
+
+pdf("../../output_data/heatmap_top100.pdf", width = 7, height = 9)
 Heatmap100
+dev.off()
+
+
+pdf("../../output_data/heatmap_top100_nolable.pdf", width = 7, height = 6)
+Heatmap100_nolable
 dev.off()
 ```
 
 ```{r}
 clip <- heatmapclip(dat_clip,master)
+
+clip_genomic <- heatmapclip_GENOMIC(dat_clip,master)
 
 pdf("../../output_data/heatmap_all.pdf", width = 6, height = 5)
 clip
@@ -162,12 +253,95 @@ dev.off
 heatmapfnx_col(top500,master,top500_master)
 ```
 
+```{r}
+heat_noxeno <- heatmapfnx_nolabel(dat_log_noxeno,master, Comp_master)
+pdf("../../output_data/heatmap_no_xenobiotics.pdf", width = 7, height =6)
+heat_noxeno
+dev.off()
+
+heat_top130_noxno <- heatmapfnx(top500_noxeno,master,Comp_master)
+pdf("../../output_data/heatmap_no_xenobiotics_top130.pdf", width = 7, height = 10)
+heat_top130_noxno
+dev.off()
+```
+
 PCA ANALYSIS
 ```{r}
 t_dat <-  t(dat_heatmap)
 pcs <- prcomp(t_dat, scale = FALSE, center = FALSE)
 
-autoplot(pcs) +geom_text_repel((aes(label = row.names(t_dat))))
+
+autoplot(pcs) + geom_text_repel((aes(label = row.names(t_dat))))
+
+PCAplot <- autoplot(pcs)
+
+pdf("../../output_data/PCA.pdf", width = 7, height = 6)
+PCAplot
+dev.off()
+
+#exclude the outliers from the first PCA
+exclude_pca <- c("VOA_1048_d","VOA_322_b","VOA_6851_c","VOA_1381_b")#,"VOA_392_e")
+dat_exclude <- dat_heatmap[,!names(dat_heatmap) %in% exclude_pca]
+
+t_dat_exclude <- t(dat_exclude)
+pcs_2 <- prcomp(t_dat_exclude, scale = FALSE, center = FALSE)
+
+autoplot(pcs_2)+ geom_text_repel((aes(label = row.names(t_dat_exclude))))
+
+master_exclude <- master[!master$CLIENT_IDENTIFIER %in% exclude_pca,]
+master_exclude <- rownames_to_column(master_exclude)
+master_exclude <- column_to_rownames(master_exclude, var = "CLIENT_IDENTIFIER")
+
+pc <- as.data.frame(pcs_2$x[,1:10])
+pc <- merge(pc,master_exclude, by = "row.names")
+
+PC_cor <- plot(pc[,c("GROUP_NUMBER","AGE","BMI","Risk_number","PC1","PC2","PC3")])
+
+plot(pc[,c("PC1","BMI")])
+
+#linear model of BMI and PC1
+
+lmbmi <- lm(BMI~PC1, pc)
+summary(lmbmi)
+
+pdf("../../output_data/PCA_corr.pdf", width = 7, height = 6)
+PC_cor
+dev.off()
+
+# what genes are associated with PC1? 
+pc1 <- as.data.frame(pcs_2$rotation[,1])
+```
+
+PCA ANALYSIS NO XENOBIOTICS
+```{R}
+t_dat_noxeno <-  t(dat_heatmap_noxeno)
+pcs_noxeno <- prcomp(t_dat_noxeno, scale = FALSE, center = FALSE)
+
+
+autoplot(pcs_noxeno) + geom_text_repel((aes(label = row.names(t_dat_noxeno))))
+
+
+#exclude the outliers from the first PCA
+exclude_pca <- c("VOA_1048_d","VOA_322_b","VOA_6851_c","VOA_1381_b")#,"VOA_392_e")
+dat_exclude_noxeno <- dat_heatmap_noxeno[,!names(dat_heatmap_noxeno) %in% exclude_pca]
+
+t_dat_exclude_noxeno <- t(dat_exclude_noxeno)
+pcs_2_noxeno <- prcomp(t_dat_exclude_noxeno, scale = FALSE, center = FALSE)
+
+autoplot(pcs_2_noxeno)+ geom_text_repel((aes(label = row.names(t_dat_exclude_noxeno))))
+
+master_exclude <- master[!master$CLIENT_IDENTIFIER %in% exclude_pca,]
+master_exclude <- rownames_to_column(master_exclude)
+master_exclude <- column_to_rownames(master_exclude, var = "CLIENT_IDENTIFIER")
+
+pc_noxeno <- as.data.frame(pcs_2_noxeno$x[,1:10])
+pc_noxeno <- merge(pc_noxeno,master_exclude, by = "row.names")
+
+PC_cor <- plot(pc_noxeno[,c("GROUP_NUMBER","AGE","BMI","Risk_number","PC1","PC2","PC3")])
+
+plot(pc[,c("PC1","BMI")])
+
+pc1_noxeno <- as.data.frame(pcs_2_noxeno$rotation[,1])
 ```
 
 CYSTINE PATHWAY
@@ -187,14 +361,7 @@ cysteine_pathway <- dat_pathway_analysis %>% filter(BIOCHEMICAL %in% cysteine) %
 #apend master data
 cysteine_pathway <- left_join(cysteine_pathway,master,by = "CLIENT_IDENTIFIER")
 
-melt_cysteine <- melt(cysteine_pathway, id.vars = c("CLIENT_IDENTIFIER","SAMPLE_NAME","SAMPLE_ID","AGE","BMI","CLIENT_SAMPLE_MASS_MG","GROUP","Risk_group","os_yrs","os_sts","GROUP_NUMBER"))
-
-melt_cysteine %>% 
-  group_by(variable) %>% 
-  ggplot(aes(factor(GROUP),value))+
-  geom_boxplot(outlier.shape = NA)+
-  facet_wrap(~variable)+
-  geom_jitter()
+melt_cysteine <- reshape2::melt(cysteine_pathway, id.vars = c("CLIENT_IDENTIFIER","SAMPLE_NAME","SAMPLE_ID","AGE","BMI","CLIENT_SAMPLE_MASS_MG","GROUP","Risk_group","os_yrs","os_sts","GROUP_NUMBER"))
 
 Cystat_outlier_removed <- 
   cysteine_pathway %>% 
@@ -283,4 +450,52 @@ combine <- cowplot::plot_grid(Cystat_outlier_removed,GSH_no_outlier,GSSG,CGD,SMe
 pdf("../../output_data/cysteine_box.pdf", width = 10, height = 11)
 combine
 dev.off
+```
+Vitamin C
+```{r}
+VC <- "ascorbate (Vitamin C)"
+
+vc_data <- dat_pathway_analysis %>% filter(BIOCHEMICAL %in% VC) %>% 
+  column_to_rownames(var = "BIOCHEMICAL") %>% 
+  t() %>% as.data.frame() %>% rownames_to_column(var = "CLIENT_IDENTIFIER") %>% 
+  as.data.frame()
+#apend master data
+vc_data <- left_join(vc_data,master,by = "CLIENT_IDENTIFIER")
+
+
+vc_data %>%   
+ggplot(aes(factor(GROUP), `ascorbate (Vitamin C)`))+
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(colour = Risk_group))+
+  scale_y_continuous(limits = c(-1,35))+
+  ggtitle("ascorbate (Vitamin C)")+
+  geom_text_repel(aes(label=ifelse(vc_data$`ascorbate (Vitamin C)`>5,   cysteine_pathway$CLIENT_IDENTIFIER,"")),size=3)+
+  theme_light()+
+  theme(axis.title = element_blank(),
+        text = element_text(size=8),
+        axis.text.x = element_text(size = 10))
+```
+
+SErine
+```{r}
+ser <- "serine"
+
+ser_data <- dat_pathway_analysis %>% filter(BIOCHEMICAL %in% ser) %>% 
+  column_to_rownames(var = "BIOCHEMICAL") %>% 
+  t() %>% as.data.frame() %>% rownames_to_column(var = "CLIENT_IDENTIFIER") %>% 
+  as.data.frame()
+#apend master data
+ser_data <- left_join(ser_data,master,by = "CLIENT_IDENTIFIER")
+
+ser_data %>%   
+ggplot(aes(factor(GROUP), `serine`))+
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(colour = Risk_group))+
+  scale_y_continuous(limits = c(-1,5))+
+  ggtitle("Serine")+
+  #geom_text_repel(aes(label=ifelse(ser_data$`ascorbate (Vitamin C)`>5,   cysteine_pathway$CLIENT_IDENTIFIER,"")),size=3)+
+  theme_light()+
+  theme(axis.title = element_blank(),
+        text = element_text(size=8),
+        axis.text.x = element_text(size = 10))
 ```
