@@ -1,0 +1,86 @@
+---
+title: "UCEC"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{R}
+dat <- read.table("../../Data/gdac.broadinstitute.org_UCEC.mRNAseq_Preprocess.Level_3.2016012800.0.0/UCEC.uncv2.mRNAseq_RSEM_normalized_log2.txt", header = FALSE, stringsAsFactors = FALSE)
+zscore <- read.table("../../Data/gdac.broadinstitute.org_UCEC.mRNAseq_Preprocess.Level_3.2016012800.0.0/UCEC.uncv2.mRNAseq_RSEM_Z_Score.txt", header = FALSE, stringsAsFactors = FALSE)
+
+mut <- read.csv("../../Data/gdac.broadinstitute.org_UCEC.mRNAseq_Preprocess.Level_3.2016012800.0.0/mutations.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+subset
+```{r}
+wt_CTNNB <- subset(mut,CTNNB1=="WT") 
+mut_CTNNB <- subset(mut,CTNNB1!="WT")
+```
+
+pull out ASS1 mRNA data
+```{r}
+dat2 <- dat
+colnames <- dat[1,]
+dat2 <- dat2[-1,]
+colnames(dat2) <- colnames
+
+ASS_mRNA <- subset(dat2,gene =="ASS1|445")
+```
+
+pull out ASS1 in zscore data
+```{r}
+dat_z <- zscore
+colnames <- zscore[1,]
+dat_z <- dat_z[-1,]
+colnames(dat_z) <- colnames
+
+ASS_z <- subset(dat_z,gene =="ASS1|445")
+
+
+ASSz_plot <- t(ASS_z) %>% as.data.frame() %>% rownames_to_column()
+ASSz_plot <- ASSz_plot[-1,]
+colnames(ASSz_plot) <- c("SAMPLE_ID","ASS1")
+
+mergz <- left_join(ASSz_plot,mut,by= "SAMPLE_ID")
+mergz$ASS1.x <- as.numeric(as.character((mergz$ASS1.x)))
+```
+
+
+```{R}
+ASS_plot <- t(ASS_mRNA) %>% as.data.frame() %>% rownames_to_column()
+ASS_plot <- ASS_plot[-1,]
+colnames(ASS_plot) <- c("SAMPLE_ID","ASS1")
+
+merg <- left_join(ASS_plot,mut,by= "SAMPLE_ID")
+merg$ASS1.x <- as.numeric(as.character((merg$ASS1.x)))
+```
+
+plot 
+```{r}
+merg_2group<- subset(merg,CTNNB1.1 == c("Mut","WT"))
+
+p <- merg_2group %>% 
+ggplot(aes(x=CTNNB1.1, y = ASS1.x)) +
+  geom_boxplot(width = 0.45, outlier.shape = NULL)+
+  geom_jitter(width=0.15)
+
+p + labs(x = "CTNNB1 Mutation Status", y = "ASS1 mRNA level (log2 RSEM)")
+```
+
+
+plot 
+```{r}
+merg_zscore <- subset(mergz,CTNNB1.1 == c("Mut","WT"))
+
+merg_zscore%>% 
+ggplot(aes(x=CTNNB1.1, y = ASS1.x)) +
+  geom_boxplot(outlier.fill = NULL, width = 0.45)+
+  geom_jitter(width = 0.15)
+```
+
+```{r}
+  wilcox.test(ASS1.x~CTNNB1_num, data = merg_2group)
+```
